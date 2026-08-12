@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}{{ word.text }}{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 760px;">
+  <div class="cnd-card p-4">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <span class="lang-chip mb-2">{{ word.language.name }}</span>
+        <h1 class="display-font mb-0">{{ word.text }}</h1>
+        {% if word.ipa_pronunciation %}<div class="text-muted">/{{ word.ipa_pronunciation }}/</div>{% endif %}
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-play" data-speak="{{ word.text }}" data-lang-code="{{ word.language.code }}" data-word-id="{{ word.id }}" title="Play pronunciation">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        {% if current_user.is_authenticated %}
+          <button id="bookmark-btn" class="btn btn-outline-cnd" data-word-id="{{ word.id }}">
+            {{ "★ Bookmarked" if is_bookmarked else "☆ Bookmark" }}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+    <hr>
+
+    <dl class="row">
+      {% if word.part_of_speech %}
+        <dt class="col-sm-3">Part of speech</dt><dd class="col-sm-9">{{ word.part_of_speech }}</dd>
+      {% endif %}
+      {% if word.meaning %}
+        <dt class="col-sm-3">Meaning</dt><dd class="col-sm-9">{{ word.meaning }}</dd>
+      {% endif %}
+      {% if word.example_sentence %}
+        <dt class="col-sm-3">Example</dt>
+        <dd class="col-sm-9">
+          <em>{{ word.example_sentence }}</em>
+          {% if word.example_translation %}<br><span class="text-muted">{{ word.example_translation }}</span>{% endif %}
+        </dd>
+      {% endif %}
+      {% if word.synonyms %}<dt class="col-sm-3">Synonyms</dt><dd class="col-sm-9">{{ word.synonyms }}</dd>{% endif %}
+      {% if word.antonyms %}<dt class="col-sm-3">Antonyms</dt><dd class="col-sm-9">{{ word.antonyms }}</dd>{% endif %}
+      {% if word.grammar_note %}<dt class="col-sm-3">Grammar note</dt><dd class="col-sm-9">{{ word.grammar_note }}</dd>{% endif %}
+      {% if word.common_mistake_note %}<dt class="col-sm-3">Common mistake</dt><dd class="col-sm-9">{{ word.common_mistake_note }}</dd>{% endif %}
+      {% if word.origin_note %}<dt class="col-sm-3">Origin</dt><dd class="col-sm-9">{{ word.origin_note }}</dd>{% endif %}
+      <dt class="col-sm-3">Difficulty</dt><dd class="col-sm-9">{{ word.difficulty_level }}</dd>
+    </dl>
+  </div>
+
+  {% if sibling_words %}
+    <h2 class="h5 mt-4">Same word in other languages</h2>
+    <div class="row g-3">
+      {% for sibling in sibling_words %}
+        <div class="col-md-6">
+          <a href="{{ url_for('dictionary.word_detail', word_id=sibling.id) }}" class="text-decoration-none">
+            <div class="cnd-card p-3">
+              <span class="lang-chip mb-1">{{ sibling.language.name }}</span>
+              <div class="display-font">{{ sibling.text }}</div>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const bookmarkBtn = document.getElementById("bookmark-btn");
+  if (bookmarkBtn) {
+    bookmarkBtn.addEventListener("click", async function () {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      const res = await fetch(`/dictionary/bookmark/${this.dataset.wordId}`, {
+        method: "POST",
+        headers: { "X-CSRFToken": csrfToken },
+      });
+      const data = await res.json();
+      this.textContent = data.bookmarked ? "★ Bookmarked" : "☆ Bookmark";
+    });
+  }
+</script>
+{% endblock %}

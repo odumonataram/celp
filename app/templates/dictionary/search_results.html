@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Search results{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-1">Results for "{{ query }}"</h1>
+  <p class="text-muted">{{ results|length }} match(es) found.</p>
+
+  <div class="row g-3">
+    {% for word in results %}
+      <div class="col-md-6">
+        <a href="{{ url_for('dictionary.word_detail', word_id=word.id) }}" class="text-decoration-none">
+          <div class="cnd-card p-3 h-100">
+            <div class="d-flex justify-content-between">
+              <div class="fs-5 display-font">{{ word.text }}</div>
+              <span class="text-muted small">{{ word.part_of_speech }}</span>
+            </div>
+            <p class="text-muted small mb-0">{{ word.meaning }}</p>
+          </div>
+        </a>
+      </div>
+    {% else %}
+      <p class="text-muted">No matches found. Try a different spelling or language.</p>
+    {% endfor %}
+  </div>
+
+  <a href="{{ url_for('dictionary.index') }}" class="btn btn-outline-cnd mt-4">New search</a>
+</div>
+{% endblock %}

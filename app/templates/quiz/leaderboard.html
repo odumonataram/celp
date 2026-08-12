@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <h1 class="mb-4">Leaderboard</h1>
+  <div class="cnd-card">
+    <table class="table mb-0">
+      <thead><tr><th>#</th><th>Student</th><th>XP</th><th>Streak</th></tr></thead>
+      <tbody>
+        {% for user in top_users %}
+          <tr class="{{ 'fw-bold' if user.id == current_user.id else '' }}">
+            <td>{{ loop.index }}</td>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.xp_points }}</td>
+            <td>🔥{{ user.current_streak }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

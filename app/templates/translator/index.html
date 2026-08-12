@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Translator{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-1">Translator</h1>
+  <p class="text-muted">Type a word, phrase, or short sentence below.</p>
+
+  <form id="translator-form" class="cnd-card p-4 mb-4">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-4">
+        <label class="form-label small">From</label>
+        <select id="source-lang" class="form-select">
+          {% for lang in languages %}
+            <option value="{{ lang.code }}" {% if lang.code == 'en' %}selected{% endif %}>{{ lang.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-1 text-center pt-4">
+        <button type="button" id="swap-languages" class="btn btn-outline-cnd btn-sm" title="Swap languages">⇄</button>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label small">To</label>
+        <select id="target-lang" class="form-select">
+          {% for lang in languages %}
+            <option value="{{ lang.code }}" {% if lang.code == 'ijw' %}selected{% endif %}>{{ lang.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3 pt-4">
+        <button type="submit" class="btn btn-cnd-primary w-100">Translate</button>
+      </div>
+    </div>
+    <div class="mt-3">
+      <textarea id="translator-text" class="form-control" rows="3" placeholder="Type here..."></textarea>
+    </div>
+  </form>
+
+  <div id="translator-results"></div>
+
+  {% if current_user.is_authenticated %}
+    <p class="small"><a href="{{ url_for('translator.history') }}">View your translation history &rarr;</a></p>
+  {% endif %}
+</div>
+{% endblock %}

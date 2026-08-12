@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Admin overview</h1>
+  <div class="row g-3 mb-4">
+    {% for label, value in [("Users", stats.users), ("Students", stats.students), ("Lecturers", stats.lecturers), ("Words", stats.words), ("Courses", stats.courses), ("Quizzes", stats.quizzes), ("Quiz attempts", stats.quiz_attempts)] %}
+      <div class="col-md-3">
+        <div class="stat-pill text-center"><div class="fs-4 fw-bold">{{ value }}</div><div class="small text-muted">{{ label }}</div></div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('admin.users') }}" class="btn btn-outline-cnd">Manage users</a>
+    <a href="{{ url_for('admin.words') }}" class="btn btn-outline-cnd">Manage dictionary</a>
+    <a href="{{ url_for('admin.new_word') }}" class="btn btn-cnd-primary">Add a word</a>
+  </div>
+</div>
+{% endblock %}

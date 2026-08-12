@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}New lesson{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 600px;">
+  <h1 class="mb-4">Add a lesson to {{ course.title }}</h1>
+  <form method="POST" class="cnd-card p-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="mb-3">
+      <label class="form-label">Title *</label>
+      <input type="text" name="title" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Content</label>
+      <textarea name="content" class="form-control" rows="6"></textarea>
+    </div>
+    <button type="submit" class="btn btn-cnd-primary">Save lesson</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{% block title %}CND Language Platform{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg cnd-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('main.landing') }}">CND Language Platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        {% if current_user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard.index') }}">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('translator.index') }}">Translator</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('dictionary.index') }}">Dictionary</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('quiz.index') }}">Quizzes</a></li>
+          {% if current_user.is_lecturer() %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('lecturer.index') }}">My Courses</a></li>
+          {% endif %}
+          {% if current_user.is_admin() %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.index') }}">Admin</a></li>
+          {% endif %}
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('translator.index') }}">Translator</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('dictionary.index') }}">Dictionary</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('main.about') }}">About</a></li>
+        {% endif %}
+      </ul>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="form-check form-switch mb-0" title="Dark mode">
+          <input class="form-check-input" type="checkbox" id="theme-toggle">
+          <label class="form-check-label small" for="theme-toggle">Dark</label>
+        </div>
+        {% if current_user.is_authenticated %}
+          <span class="small text-muted">{{ current_user.xp_points }} XP &middot; 🔥{{ current_user.current_streak }}</span>
+          <a class="btn btn-outline-cnd btn-sm" href="{{ url_for('auth.logout') }}">Log out</a>
+        {% else %}
+          <a class="btn btn-outline-cnd btn-sm" href="{{ url_for('auth.login') }}">Log in</a>
+          <a class="btn btn-cnd-primary btn-sm" href="{{ url_for('auth.register') }}">Sign up</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'danger' else category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<main>
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="cnd-footer mt-5">
+  <div class="container d-flex flex-wrap justify-content-between gap-3">
+    <div>
+      <strong>CND Language Platform</strong>
+      <p class="small mb-0">Built for the Communication in Niger Delta course, Federal University Otuoke.</p>
+    </div>
+    <div class="small">
+      <a href="{{ url_for('main.about') }}">About</a> &middot;
+      <a href="{{ url_for('main.feedback') }}">Feedback</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

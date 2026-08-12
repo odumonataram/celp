@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 720px;">
+  <h1>About this platform</h1>
+  <p>
+    This platform was built as part of an MSc project on intelligent multilingual translation
+    and indigenous language learning for the Communication in Niger Delta (CND) course at
+    Federal University Otuoke. It supports English alongside four Niger Delta languages:
+    Ijaw, Nembe, Epie, and Ogbia.
+  </p>
+  <p>
+    The dictionary, translator, and quiz content depend entirely on verified vocabulary
+    supplied by the project's data collection -- the platform provides the structure;
+    the linguistic accuracy comes from the fieldwork behind it.
+  </p>
+  <a href="{{ url_for('main.feedback') }}" class="btn btn-cnd-primary">Send feedback</a>
+</div>
+{% endblock %}

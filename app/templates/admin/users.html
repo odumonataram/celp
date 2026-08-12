@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Manage users{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Users</h1>
+  <div class="cnd-card">
+    <table class="table mb-0">
+      <thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ user.full_name }}</td>
+            <td>{{ user.username }}</td>
+            <td><span class="badge text-bg-secondary">{{ user.role }}</span></td>
+            <td>{{ "Active" if user.is_active_account else "Deactivated" }}</td>
+            <td>
+              <form method="POST" action="{{ url_for('admin.toggle_user_active', user_id=user.id) }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button class="btn btn-sm btn-outline-cnd" {{ "disabled" if user.id == current_user.id else "" }}>
+                  {{ "Deactivate" if user.is_active_account else "Activate" }}
+                </button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

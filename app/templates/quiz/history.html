@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Quiz history{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Your quiz history</h1>
+  <div class="cnd-card">
+    <table class="table mb-0">
+      <thead><tr><th>Quiz</th><th>Score</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for attempt in attempts %}
+          <tr>
+            <td>{{ attempt.quiz.title }}</td>
+            <td>{{ attempt.score }}%</td>
+            <td class="text-muted small">{{ attempt.started_at.strftime("%d %b %Y, %H:%M") }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="3" class="text-muted">No attempts yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

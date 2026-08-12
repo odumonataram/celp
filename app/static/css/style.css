@@ -1,0 +1,204 @@
+/* =========================================================================
+   app/static/css/style.css
+   Design system for the CND Language Platform.
+
+   Direction: the five languages here all belong to Bayelsa State's riverine
+   Niger Delta. Rather than default Bootstrap blue, the palette draws from
+   that geography -- deep mangrove green, river-silt ochre, warm cream paper
+   -- and a thin wave motif is the one recurring signature element. We don't
+   invent specific "traditional patterns" for Ijaw/Nembe/Epie/Ogbia since
+   that would be guessing at cultural detail we haven't verified; the river
+   motif is grounded in plain geography instead.
+   ========================================================================= */
+
+:root {
+  --color-bg: #F6F3EA;
+  --color-surface: #FFFFFF;
+  --color-text: #1F2A24;
+  --color-text-muted: #5B6660;
+  --color-primary: #0B6E4F;
+  --color-primary-dark: #074934;
+  --color-primary-light: #E3F0EA;
+  --color-accent: #D98E04;
+  --color-accent-dark: #B8740A;
+  --color-border: #E1DCCB;
+  --color-danger: #B3261E;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 4px 16px rgba(15, 35, 25, 0.08);
+}
+
+[data-theme="dark"] {
+  --color-bg: #0E1814;
+  --color-surface: #16221C;
+  --color-text: #ECE7D8;
+  --color-text-muted: #9FAFA6;
+  --color-primary: #36B881;
+  --color-primary-dark: #1F8C5F;
+  --color-primary-light: #1B3328;
+  --color-accent: #F0A93B;
+  --color-accent-dark: #D98E04;
+  --color-border: #243B30;
+}
+
+[data-fontsize="large"] {
+  font-size: 19px;
+}
+
+[data-colorblind="true"] {
+  --color-primary: #0072B2;
+  --color-accent: #E69F00;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+h1, h2, h3, .display-font {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--color-primary); }
+a:hover { color: var(--color-primary-dark); }
+
+/* Navbar ------------------------------------------------------------- */
+.cnd-navbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+.cnd-navbar .navbar-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+[data-theme="dark"] .cnd-navbar .navbar-brand { color: var(--color-primary); }
+.cnd-navbar .nav-link { color: var(--color-text); font-weight: 500; }
+.cnd-navbar .nav-link.active { color: var(--color-primary); }
+
+/* Buttons -------------------------------------------------------------- */
+.btn-cnd-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+.btn-cnd-primary:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+  color: #fff;
+}
+.btn-cnd-accent {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #1F2A24;
+}
+.btn-cnd-accent:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+.btn-outline-cnd {
+  border: 1.5px solid var(--color-primary);
+  color: var(--color-primary);
+  background: transparent;
+}
+.btn-outline-cnd:hover { background: var(--color-primary-light); }
+
+/* Cards ------------------------------------------------------------------ */
+.cnd-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Hero / wave divider ----------------------------------------------------- */
+.cnd-hero {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  color: #fff;
+  padding: 4.5rem 0 6rem;
+}
+.cnd-hero h1 { color: #fff; }
+.cnd-wave-divider {
+  display: block;
+  width: 100%;
+  height: 48px;
+  margin-top: -1px;
+}
+.cnd-wave-divider path { fill: var(--color-bg); }
+
+/* Language pill chips ------------------------------------------------------ */
+.lang-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+[data-theme="dark"] .lang-chip { color: var(--color-primary); }
+
+/* Pronunciation play button --------------------------------------------- */
+.btn-play {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+}
+.btn-play:hover { background: var(--color-primary-dark); }
+.btn-play.is-playing { background: var(--color-accent); }
+
+/* Flashcards --------------------------------------------------------------- */
+.flashcard {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+}
+
+/* Streak / XP badge -------------------------------------------------------- */
+.stat-pill {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.6rem 1.1rem;
+}
+
+/* Confidence score bar ------------------------------------------------------ */
+.confidence-bar {
+  height: 6px;
+  border-radius: 4px;
+  background: var(--color-border);
+  overflow: hidden;
+}
+.confidence-bar-fill {
+  height: 100%;
+  background: var(--color-primary);
+}
+
+footer.cnd-footer {
+  background: var(--color-primary-dark);
+  color: rgba(255,255,255,0.85);
+  padding: 2.5rem 0;
+}
+footer.cnd-footer a { color: #fff; }

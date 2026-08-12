@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-1">{{ course.title }}</h1>
+  <p class="text-muted">{{ course.description }}</p>
+
+  <div class="row g-4 mt-3">
+    <div class="col-md-7">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h5 mb-0">Lessons</h2>
+        <a href="{{ url_for('lecturer.new_lesson', course_id=course.id) }}" class="btn btn-sm btn-outline-cnd">Add lesson</a>
+      </div>
+      <div class="cnd-card">
+        <ul class="list-group list-group-flush">
+          {% for lesson in lessons %}
+            <li class="list-group-item">{{ lesson.title }}</li>
+          {% else %}
+            <li class="list-group-item text-muted">No lessons yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <h2 class="h5">Enrolled students</h2>
+      <div class="cnd-card">
+        <ul class="list-group list-group-flush">
+          {% for student in students %}
+            <li class="list-group-item">{{ student.full_name }}</li>
+          {% else %}
+            <li class="list-group-item text-muted">No students enrolled yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

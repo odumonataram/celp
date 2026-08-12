@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Add a word{% endblock %}
+{% block content %}
+<div class="container py-5" style="max-width: 720px;">
+  <h1 class="mb-4">Add a dictionary word</h1>
+  <form method="POST" class="cnd-card p-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">English gloss (the shared concept) *</label>
+        <input type="text" name="english_gloss" class="form-control" required placeholder="e.g. house">
+        <div class="form-text">If this gloss already exists, this word will be linked to it as a translation.</div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Language *</label>
+        <select name="language_id" class="form-select" required>
+          {% for lang in languages %}<option value="{{ lang.id }}">{{ lang.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Word text *</label>
+        <input type="text" name="text" class="form-control" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">IPA pronunciation</label>
+        <input type="text" name="ipa_pronunciation" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Part of speech</label>
+        <input type="text" name="part_of_speech" class="form-control" placeholder="noun, verb, ...">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Difficulty</label>
+        <select name="difficulty_level" class="form-select">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Meaning</label>
+        <textarea name="meaning" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Example sentence</label>
+        <textarea name="example_sentence" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Example translation</label>
+        <textarea name="example_translation" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Synonyms (comma-separated)</label>
+        <input type="text" name="synonyms" class="form-control">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Antonyms (comma-separated)</label>
+        <input type="text" name="antonyms" class="form-control">
+      </div>
+      <div class="col-12">
+        <label class="form-label">Grammar note</label>
+        <textarea name="grammar_note" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Common mistake note</label>
+        <textarea name="common_mistake_note" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-12">
+        <label class="form-label">Origin note</label>
+        <textarea name="origin_note" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Category (for phrase library)</label>
+        <input type="text" name="category" class="form-control" placeholder="greetings, market, family...">
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-cnd-primary mt-4">Save word</button>
+  </form>
+</div>
+{% endblock %}

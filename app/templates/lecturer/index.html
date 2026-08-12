@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My courses{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">My courses</h1>
+    <a href="{{ url_for('lecturer.new_course') }}" class="btn btn-cnd-primary">New course</a>
+  </div>
+
+  <div class="row g-3">
+    {% for course in courses %}
+      <div class="col-md-4">
+        <a href="{{ url_for('lecturer.course_detail', course_id=course.id) }}" class="text-decoration-none">
+          <div class="cnd-card p-3 h-100">
+            <h2 class="h5">{{ course.title }}</h2>
+            <p class="text-muted small">{{ course.lessons.count() }} lesson(s) &middot; {{ course.enrollments.count() }} student(s)</p>
+          </div>
+        </a>
+      </div>
+    {% else %}
+      <p class="text-muted">You haven't created any courses yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Your bookmarks{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-4">Your bookmarks</h1>
+  <div class="row g-3">
+    {% for item in items %}
+      {% if item.word %}
+        <div class="col-md-4">
+          <a href="{{ url_for('dictionary.word_detail', word_id=item.word.id) }}" class="text-decoration-none">
+            <div class="cnd-card p-3">
+              <span class="lang-chip mb-1">{{ item.word.language.name }}</span>
+              <div class="display-font">{{ item.word.text }}</div>
+              <div class="text-muted small">{{ item.word.meaning[:50] if item.word.meaning else "" }}</div>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <p class="text-muted">No bookmarks yet. Browse the <a href="{{ url_for('dictionary.index') }}">dictionary</a> and bookmark words you want to revisit.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

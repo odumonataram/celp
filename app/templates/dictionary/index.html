@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Dictionary{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-1">Dictionary</h1>
+  <p class="text-muted">Search any word across all five languages.</p>
+
+  <form action="{{ url_for('dictionary.search') }}" method="GET" class="cnd-card p-3 mb-2 position-relative">
+    <div class="row g-2">
+      <div class="col-md-3">
+        <select name="lang" id="dictionary-search-lang" class="form-select">
+          {% for lang in languages %}
+            <option value="{{ lang.code }}">{{ lang.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-7">
+        <input type="text" name="q" id="dictionary-search-input" class="form-control" placeholder="Search a word..." autocomplete="off">
+        <div id="autocomplete-dropdown" class="list-group position-absolute w-100 d-none" style="z-index: 10;"></div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-cnd-primary w-100">Search</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="d-flex gap-3 small mb-4">
+    <a href="{{ url_for('dictionary.word_of_the_day') }}">Word of the day</a>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('dictionary.bookmarks') }}">Your bookmarks</a>
+    {% endif %}
+  </div>
+
+  <h2 class="h5">Trending words</h2>
+  <div class="row g-3">
+    {% for word in trending %}
+      <div class="col-md-3">
+        <a href="{{ url_for('dictionary.word_detail', word_id=word.id) }}" class="text-decoration-none">
+          <div class="cnd-card p-3 h-100">
+            <div class="lang-chip mb-2">{{ word.language.name }}</div>
+            <div class="fs-5 display-font">{{ word.text }}</div>
+            <div class="text-muted small">{{ word.meaning[:50] if word.meaning else "" }}</div>
+          </div>
+        </a>
+      </div>
+    {% else %}
+      <p class="text-muted">No words yet -- once the dictionary is seeded, popular words will show here.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

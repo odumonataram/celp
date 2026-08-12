@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h1 class="mb-1">Welcome back, {{ current_user.full_name.split(" ")[0] }}</h1>
+  <p class="text-muted">Here's how your learning is going.</p>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="stat-pill text-center"><div class="fs-4 fw-bold">{{ current_user.xp_points }}</div><div class="small text-muted">XP points</div></div></div>
+    <div class="col-md-3"><div class="stat-pill text-center"><div class="fs-4 fw-bold">🔥{{ current_user.current_streak }}</div><div class="small text-muted">Day streak</div></div></div>
+    <div class="col-md-3"><div class="stat-pill text-center"><div class="fs-4 fw-bold">{{ badge_count }}</div><div class="small text-muted">Badges earned</div></div></div>
+    <div class="col-md-3"><div class="stat-pill text-center"><div class="fs-4 fw-bold">{{ current_user.coins }}</div><div class="small text-muted">Coins</div></div></div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="cnd-card p-4">
+        <h2 class="h5">Words learned (last 7 days)</h2>
+        <canvas id="wordsChart" height="180"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="cnd-card p-4">
+        <h2 class="h5">Practice minutes (last 7 days)</h2>
+        <canvas id="practiceChart" height="180"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4 mt-1">
+    <div class="col-md-6">
+      <div class="cnd-card p-4">
+        <h2 class="h5">Recent quiz attempts</h2>
+        <ul class="list-unstyled mb-0">
+          {% for attempt in recent_quiz_attempts %}
+            <li class="d-flex justify-content-between border-bottom py-2">
+              <span>{{ attempt.quiz.title }}</span><span>{{ attempt.score }}%</span>
+            </li>
+          {% else %}
+            <li class="text-muted">No quiz attempts yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="cnd-card p-4">
+        <h2 class="h5">Recent translations</h2>
+        <ul class="list-unstyled mb-0">
+          {% for t in recent_translations %}
+            <li class="d-flex justify-content-between border-bottom py-2">
+              <span>{{ t.source_text }}</span><span class="text-muted">{{ t.target_text or "--" }}</span>
+            </li>
+          {% else %}
+            <li class="text-muted">No translations yet.</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+  const labels = {{ chart_labels | tojson }};
+  new Chart(document.getElementById("wordsChart"), {
+    type: "bar",
+    data: { labels: labels, datasets: [{ label: "Words learned", data: {{ words_learned_series | tojson }}, backgroundColor: "#0B6E4F" }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+  new Chart(document.getElementById("practiceChart"), {
+    type: "line",
+    data: { labels: labels, datasets: [{ label: "Minutes", data: {{ practice_minutes_series | tojson }}, borderColor: "#D98E04", tension: 0.3 }] },
+    options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}CND Language Platform -- Learn Ijaw, Nembe, Epie & Ogbia{% endblock %}
+
+{% block content %}
+<section class="cnd-hero">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <span class="lang-chip mb-3">Federal University Otuoke &middot; CND Course</span>
+        <h1 class="display-4 mt-3">Translate, learn, and practise four Niger Delta languages</h1>
+        <p class="lead" style="max-width: 560px;">
+          A multilingual translator and learning companion for English, Ijaw, Nembe, Epie, and
+          Ogbia -- built for students taking Communication in Niger Delta.
+        </p>
+        <div class="mt-4 d-flex gap-3">
+          <a href="{{ url_for('auth.register') }}" class="btn btn-cnd-accent btn-lg">Get started</a>
+          <a href="{{ url_for('translator.index') }}" class="btn btn-outline-light btn-lg">Try the translator</a>
+        </div>
+      </div>
+      <div class="col-lg-5 mt-5 mt-lg-0">
+        <div class="cnd-card p-4" style="color:#1F2A24;">
+          <h2 class="h5 mb-3">Languages on the platform</h2>
+          {% for lang in languages %}
+            <div class="d-flex justify-content-between border-bottom py-2">
+              <span>{{ lang.name }}</span>
+              <span class="text-muted small">{{ lang.description[:40] }}{% if lang.description|length > 40 %}...{% endif %}</span>
+            </div>
+          {% endfor %}
+          <p class="small text-muted mt-3 mb-0">{{ word_count }} dictionary entries and growing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="cnd-wave-divider" viewBox="0 0 1440 48" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0,32 C240,0 480,48 720,24 C960,0 1200,48 1440,16 L1440,48 L0,48 Z"></path>
+</svg>
+
+<section class="container py-5">
+  <div class="row g-4 text-center">
+    <div class="col-md-4">
+      <div class="cnd-card p-4 h-100">
+        <h3 class="h5">Live translation</h3>
+        <p class="text-muted small mb-0">Type a word or phrase and see it move between English and your chosen indigenous language, with a confidence score so you know how reliable the match is.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="cnd-card p-4 h-100">
+        <h3 class="h5">A real dictionary</h3>
+        <p class="text-muted small mb-0">Every word has pronunciation, part of speech, example sentences, synonyms, and usage notes -- not just a bare translation.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="cnd-card p-4 h-100">
+        <h3 class="h5">Quizzes & streaks</h3>
+        <p class="text-muted small mb-0">Practise with quizzes, earn XP and badges, and keep a daily streak going.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

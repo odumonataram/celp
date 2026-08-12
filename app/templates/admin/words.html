@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Manage dictionary{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="mb-0">Dictionary entries</h1>
+    <a href="{{ url_for('admin.new_word') }}" class="btn btn-cnd-primary">Add a word</a>
+  </div>
+  <div class="cnd-card">
+    <table class="table mb-0">
+      <thead><tr><th>Text</th><th>Language</th><th>Part of speech</th><th>Difficulty</th></tr></thead>
+      <tbody>
+        {% for word in words %}
+          <tr>
+            <td><a href="{{ url_for('dictionary.word_detail', word_id=word.id) }}">{{ word.text }}</a></td>
+            <td>{{ word.language.name }}</td>
+            <td>{{ word.part_of_speech }}</td>
+            <td>{{ word.difficulty_level }}</td>
+          </tr>
+        {% else %}
+          <tr><td colspan="4" class="text-muted">No words yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
